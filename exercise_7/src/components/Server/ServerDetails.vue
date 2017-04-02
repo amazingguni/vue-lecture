@@ -1,32 +1,30 @@
 <template>
     <div class="col-xs-12 col-sm-6">
-      <template v-if="server">
-        <p>Server #{{ server.id }} : {{ server.status }}</p>
-        <button @click="setNormal">Set server status to Normal</button>
-      </template>
-      <p v-else>Server Details are currently not updated</p>
+      <p v-if="!server">Please select a Server</p>
+      <p v-else>Server #{{ server.id }} selected, Status {{ server.status }}</p>
+      <hr>
+      <button @click="resetStatus">Change to Normal</button>
     </div>
 
 </template>
 
 <script>
-  import { eventBus } from '../../main.js'
+  import { serverBus } from '../../main';
   export default {
-    data(){
+    data: function(){
       return {
-        server:null
+          server: null
       }
     },
-    methods:{
-      setNormal: function(){
-        eventBus.setNormal(this.server.id);
+    methods: {
+      resetStatus(){
+        this.server.status = 'Normal';
       }
     },
     created(){
-      eventBus.$on('serverSelected', (server) => {
+      serverBus.$on('serverSelected', (server)=>{
         this.server = server;
       });
-
     }
   }
 </script>

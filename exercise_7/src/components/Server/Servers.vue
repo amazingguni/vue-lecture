@@ -1,18 +1,16 @@
 <template>
   <div class="col-xs-12 col-sm-6">
     <ul class="list-group">
-      <li
-        class="list-group-item"
+      <app-server
         v-for="server in servers"
-        @click="selectServer(server)">
-          Server #{{ server.id }}
-      </li>
+        :server="server"></app-server>
     </ul>
   </div>
 </template>
 
 <script>
-  import { eventBus } from '../../main.js'
+  import Server from './Server.vue'
+
   export default {
     data(){
       return {
@@ -25,22 +23,9 @@
         ]
       }
     },
-    methods:{
-      selectServer(server){
-        eventBus.selectServer(server);
-      }
-    },
-    created(){
-      eventBus.$on('statusChanged', (id) => {
-        for(var i = 0 ; i< this.servers.length; i++){
-          var server = this.servers[i];
-          if (server.id === id){
-            server.status = "Normal";
-          }
-        }
-      });
+    components: {
+      appServer: Server
     }
-
   }
 </script>
 

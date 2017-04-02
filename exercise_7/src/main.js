@@ -1,14 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-export const eventBus = new Vue({
+export const serverBus = new Vue({
   methods:{
-    selectServer(server){
-      this.$emit('serverSelected', server)
-    },
-    setNormal(id){
-      this.$emit('statusChanged', id);
-    }
   }
 });
 
