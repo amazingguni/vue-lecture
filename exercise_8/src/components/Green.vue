@@ -1,8 +1,6 @@
 <template>
     <div>
       <slot></slot>
-      <hr>
-      <slot name="title"></slot>
     </div>
 </template>
 

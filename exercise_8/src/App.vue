@@ -14,8 +14,7 @@
                 </button>
                 <hr>
                 <component :is="selectedComponent">
-                  <h1 slot="title">Title</h1>
-                  <p>I'm selected component</p>
+                  <p>This is the Content</p>
                 </component>
             </div>
         </div>
