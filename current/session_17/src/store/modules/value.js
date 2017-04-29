@@ -1,1 +1,3 @@
-// Could hold value vuex part;
+export const value = state => {
+  return state.value;
+};
