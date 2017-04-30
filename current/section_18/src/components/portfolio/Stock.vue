@@ -1,10 +1,10 @@
 <template>
   <div class="col-sm-6 col-md-4">
-    <div class="panel panel-success">
+    <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">
           {{ stock.name }}
-          <small>(Price: {{ stock.price }})</small>
+          <small>(Price: {{ stock.price }} | Quantity: {{ stock.quantity }})</small>
         </h3>
       </div>
       <div class="panel-body">
@@ -14,14 +14,14 @@
             class="form-control"
             placeholder="Quantity"
             v-model="quantity"
-            :class="{danger: insufficientFunds}">
+            :class="{danger: insufficientQuantity}">
         </div>
         <div class="pull-right">
           <button
             class="btn btn-success"
-            @click="buyStock"
-            :disabled="insufficientFunds || quantity <= 0 || !Number.parseInt(quantity)"
-            >{{ insufficientFunds ? 'Insufficient Funds' : 'Buy' }}</button>
+            @click="sellStock"
+            :disabled="insufficientQuantity || quantity <= 0 || !Number.parseInt(quantity)"
+            >{{ insufficientQuantity ? 'Not enough' : 'Sell' }}</button>
         </div>
       </div>
     </div>
@@ -35,6 +35,8 @@
 </style>
 
 <script>
+  import { mapActions } from 'vuex';
+
   export default {
     props:['stock'],
     data() {
@@ -43,23 +45,23 @@
       }
     },
     computed: {
-      funds() {
-        return this.$store.getters.funds
-      },
-      insufficientFunds() {
-        return this.quantity * this.stock.price > this.funds;
+      insufficientQuantity() {
+        return this.quantity > this.stock.quantity
       }
     },
     methods: {
-      buyStock(){
+      ...mapActions({
+          placeSellOrder: 'sellStock'
+      }),
+      sellStock(){
         const order = {
-          stockId: this.stock.id,
-          stockPrice: this.stock.price,
-          quantity: this.quantity,
+            stockId: this.stock.id,
+            stockPrice: this.stock.price,
+            quantity: this.quantity,
         }
-        this.$store.dispatch('buyStock', order)
+        this.placeSellOrder(order)
         this.quantity = 0
-      }
+      },
     },
   }
 </script>
